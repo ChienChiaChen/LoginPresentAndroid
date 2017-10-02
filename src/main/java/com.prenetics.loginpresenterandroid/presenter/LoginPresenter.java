@@ -2,6 +2,7 @@ package com.prenetics.loginpresenterandroid.presenter;
 
 import com.prenetics.loginpresenterandroid.model.ILoginMvpModel;
 import com.prenetics.loginpresenterandroid.model.LoginModel;
+import com.prenetics.loginpresenterandroid.model.data.request.LoginData;
 import com.prenetics.loginpresenterandroid.view.ILoginMvpView;
 
 public class LoginPresenter implements ILoginMvpPresenter {
@@ -9,8 +10,8 @@ public class LoginPresenter implements ILoginMvpPresenter {
     private ILoginMvpModel mLoginMvpModel;
 
     public LoginPresenter(ILoginMvpView loginMvpView) {
-        this.mLoginMvpView = loginMvpView;
-        this.mLoginMvpModel = new LoginModel(this);
+        mLoginMvpView = loginMvpView;
+        mLoginMvpModel = new LoginModel(this);
     }
 
     @Override
@@ -46,20 +47,19 @@ public class LoginPresenter implements ILoginMvpPresenter {
     }
 
     @Override
-    public void onLogin() {
+    public void onLogin(LoginData loginData) {
         mLoginMvpView.showWaitingCursor();
         mLoginMvpView.clearFocus();
-        mLoginMvpModel.requestLogin();
+        mLoginMvpModel.requestLogin(loginData);
     }
 
     @Override
-    public void onLogSuccess() {
+    public void onLoginSuccess() {
         mLoginMvpView.hideWaitingCursor();
     }
 
     @Override
-    public void onLogFail() {
+    public void onLoginFail() {
         mLoginMvpView.hideWaitingCursor();
-
     }
 }

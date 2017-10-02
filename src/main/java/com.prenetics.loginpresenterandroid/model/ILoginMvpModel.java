@@ -1,5 +1,7 @@
 package com.prenetics.loginpresenterandroid.model;
 
-public interface ILoginMvpModel extends IBaseModel {
+import com.prenetics.loginpresenterandroid.model.data.request.LoginData;
 
+public interface ILoginMvpModel extends IBaseModel {
+    void requestLogin(LoginData loginData);
 }

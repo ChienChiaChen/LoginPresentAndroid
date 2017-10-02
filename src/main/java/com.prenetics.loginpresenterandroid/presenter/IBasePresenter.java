@@ -11,4 +11,5 @@ public interface IBasePresenter {
     void onPause();
     void onStop();
     void onDestroy();
+
 }
