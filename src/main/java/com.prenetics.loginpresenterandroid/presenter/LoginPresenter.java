@@ -43,4 +43,14 @@ public class LoginPresenter implements ILoginMvpPresenter {
     public void onDestroy() {
 
     }
+
+    @Override
+    public void onLogin() {
+
+    }
+
+    @Override
+    public void onLogout() {
+
+    }
 }
