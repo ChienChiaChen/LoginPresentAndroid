@@ -48,18 +48,19 @@ public class LoginPresenter implements ILoginMvpPresenter {
 
     @Override
     public void onLogin(LoginData loginData) {
-        mLoginMvpView.showWaitingCursor();
-        mLoginMvpView.clearFocus();
+        mLoginMvpView.startLogin();
         mLoginMvpModel.requestLogin(loginData);
     }
 
     @Override
     public void onLoginSuccess() {
-        mLoginMvpView.hideWaitingCursor();
+        mLoginMvpView.endLogin();
+        mLoginMvpView.onLoginSuccess();
     }
 
     @Override
     public void onLoginFail() {
-        mLoginMvpView.hideWaitingCursor();
+        mLoginMvpView.endLogin();
+        mLoginMvpView.onLoginFail();
     }
 }
