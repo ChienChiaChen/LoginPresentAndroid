@@ -3,7 +3,10 @@ package com.prenetics.loginpresenterandroid.networks;
 import android.util.Log;
 
 import com.prenetics.loginpresenterandroid.model.data.request.LoginData;
+import com.prenetics.loginpresenterandroid.model.data.response.AccountInfo;
 import com.prenetics.loginpresenterandroid.presenter.ILoginMvpPresenter;
+
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,25 +20,33 @@ public class NetworkWrapper {
         loginService.onLogin(loginData.getAccount(), loginData.getPassword(), loginData.getUid(), loginData.getProduct())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<String>() {
+                .subscribe(new Observer<List<AccountInfo>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
+                        TAG("onSubscribe");
                     }
 
                     @Override
-                    public void onNext(@NonNull String s) {
+                    public void onNext(@NonNull List<AccountInfo> s) {
                         loginMvpPresenter.onLoginSuccess();
+                        TAG("onNext");
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         loginMvpPresenter.onLoginFail();
+                        TAG("onError");
                     }
 
                     @Override
                     public void onComplete() {
-
+                        TAG("onComplete");
                     }
                 });
     }
+
+    private static void TAG(String tag) {
+        Log.e("jason", tag);
+    }
+
 }
