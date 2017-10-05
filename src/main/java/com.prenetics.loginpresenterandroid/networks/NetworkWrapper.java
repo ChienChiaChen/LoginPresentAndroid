@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.prenetics.loginpresenterandroid.model.data.request.LoginData;
 import com.prenetics.loginpresenterandroid.model.data.response.AccountInfo;
-import com.prenetics.loginpresenterandroid.presenter.ILoginMvpPresenter;
+import com.prenetics.loginpresenterandroid.presenter.ILoginInteractor;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class NetworkWrapper {
-    public static void requestLogin(final LoginData loginData, final ILoginMvpPresenter loginMvpPresenter) {
+    public static void requestLogin(final LoginData loginData, final ILoginInteractor.OnLoginFinishedListener onLoginFinishedListener) {
         LoginService loginService = ServiceFactory.createServiceFrom(LoginService.class, LoginService.BASE_URL);
         loginService.onLogin(loginData.getAccount(), loginData.getPassword(), loginData.getUid(), loginData.getProduct())
                 .subscribeOn(Schedulers.newThread())
@@ -28,18 +28,19 @@ public class NetworkWrapper {
 
                     @Override
                     public void onNext(@NonNull List<AccountInfo> s) {
-                        loginMvpPresenter.onLoginSuccess();
-                        TAG("onNext");
+                        // TODO: 10/5/17  Save data in share preference(use apply)
+                        // TODO: 10/5/17 Invoke View
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        loginMvpPresenter.onLoginFail();
+                        // onLoginFinishedListener.onError();
                         TAG("onError");
                     }
 
                     @Override
                     public void onComplete() {
+                        onLoginFinishedListener.onSuccess();
                         TAG("onComplete");
                     }
                 });

@@ -1,66 +1,42 @@
 package com.prenetics.loginpresenterandroid.presenter;
 
-import com.prenetics.loginpresenterandroid.model.ILoginMvpModel;
-import com.prenetics.loginpresenterandroid.model.LoginModel;
 import com.prenetics.loginpresenterandroid.model.data.request.LoginData;
 import com.prenetics.loginpresenterandroid.view.ILoginMvpView;
 
 public class LoginPresenter implements ILoginMvpPresenter {
     private ILoginMvpView mLoginMvpView;
-    private ILoginMvpModel mLoginMvpModel;
+    private ILoginInteractor mLoginInteractor;
+    private ILoginInteractor.OnLoginFinishedListener onLoginFinishedListener = new ILoginInteractor.OnLoginFinishedListener() {
+       @Override
+       public void onSuccess() {
+           if (null == mLoginMvpView) return;
+
+            mLoginMvpView.navigateToHome();
+       }
+
+       @Override
+       public void onError(int errorCode) {
+           if (null == mLoginMvpView) return;
+
+           mLoginMvpView.loginFailed();
+       }
+    };
 
     public LoginPresenter(ILoginMvpView loginMvpView) {
         mLoginMvpView = loginMvpView;
-        mLoginMvpModel = new LoginModel(this);
+        mLoginInteractor = new LoginInteractor();
     }
 
     @Override
-    public void onCreate() {
-        mLoginMvpView.findView();
-        mLoginMvpView.setListener();
-    }
+    public void onLogin(LoginData loginData) {
+        if (null == mLoginMvpView || null == mLoginInteractor) return;
 
-    @Override
-    public void onStart() {
-
-    }
-
-    @Override
-    public void onResume() {
-
-    }
-
-    @Override
-    public void onPause() {
-
-    }
-
-    @Override
-    public void onStop() {
-
+        mLoginMvpView.onLoginStart();
+        mLoginInteractor.attemptLogin(loginData, onLoginFinishedListener);
     }
 
     @Override
     public void onDestroy() {
         mLoginMvpView = null;
-        mLoginMvpModel = null;
-    }
-
-    @Override
-    public void onLogin(LoginData loginData) {
-        mLoginMvpView.startLogin();
-        mLoginMvpModel.requestLogin(loginData);
-    }
-
-    @Override
-    public void onLoginSuccess() {
-        mLoginMvpView.endLogin();
-        mLoginMvpView.onLoginSuccess();
-    }
-
-    @Override
-    public void onLoginFail() {
-        mLoginMvpView.endLogin();
-        mLoginMvpView.onLoginFail();
     }
 }
