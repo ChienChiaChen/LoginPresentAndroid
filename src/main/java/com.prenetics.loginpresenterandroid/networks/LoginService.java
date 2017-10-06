@@ -9,7 +9,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface LoginService {
-    String BASE_URL = "https://register.prenetics.com/";
 
     @GET("v1/Login")
     Observable<List<AccountInfo>> onLogin(@Query("account") String account,

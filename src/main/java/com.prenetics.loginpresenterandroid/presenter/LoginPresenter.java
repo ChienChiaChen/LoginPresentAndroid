@@ -1,5 +1,7 @@
 package com.prenetics.loginpresenterandroid.presenter;
 
+import android.util.Log;
+
 import com.prenetics.loginpresenterandroid.model.data.request.LoginData;
 import com.prenetics.loginpresenterandroid.view.ILoginMvpView;
 
@@ -15,9 +17,10 @@ public class LoginPresenter implements ILoginMvpPresenter {
        }
 
        @Override
-       public void onError(int errorCode) {
+       public void onError(String errorMsg) {
            if (null == mLoginMvpView) return;
 
+           Log.e("Login_Error", "onError " + errorMsg);
            mLoginMvpView.loginFailed();
        }
     };
@@ -28,7 +31,7 @@ public class LoginPresenter implements ILoginMvpPresenter {
     }
 
     @Override
-    public void onLogin(LoginData loginData) {
+    public void login(LoginData loginData) {
         if (null == mLoginMvpView || null == mLoginInteractor) return;
 
         mLoginMvpView.onLoginStart();
